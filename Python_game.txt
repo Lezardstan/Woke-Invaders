@@ -1,1 +1,62 @@
-spaceinvaders_by_noobz.py
+import tkinter as tk
+from tkinter import PhotoImage 
+
+class Mob:
+    def __init__(self, x_position, life):
+        self.x_position = x_position
+        #self.image = PhotoImage(file=mob_img_path)
+        self.life = life
+
+class Player:
+    def __init__(self, position, life):
+        self.position = position
+        #self.image = PhotoImage(file=player_img_path)
+        self.life = life
+
+def pause_menu():
+    print("Entered pause menu")
+    pause = tk.Toplevel()
+    pause.geometry("200x200+500+300")
+    pause.title("PAUSE")
+    pause.configure(background="white")
+    restart = tk.Button(pause, text="Reprendre", command=pause.destroy)
+    restart.pack()
+    pause.grab_set()
+
+def keypress(event):
+    if event.keysym == "d":
+        player.position += 1
+        print(player.position)
+    if event.keysym == "q":
+        player.position -= 1
+        print(player.position)
+    if event.keysym == "Escape":
+        pause_menu()
+    print(event.keysym)
+        
+
+
+# Création de la fenêtre
+main = tk.Tk()
+main.title("Space Invaders")
+main.geometry("700x500+300+200")
+main.configure(background="black")
+
+# Configuration des sprites
+mob_img_path = "mob.png"
+player_img_path ="player.png"
+bullet_img_path = ""
+
+
+# Création des objets
+mob1 = Mob(1, 1)
+mob2 = Mob(2, 1)
+mob3 = Mob(3, 1)
+mob4 = Mob(4, 1)
+mob5 = Mob(5, 1)
+player = Player(10, 3)
+
+
+main.bind("<Key>", keypress)
+
+main.mainloop()
