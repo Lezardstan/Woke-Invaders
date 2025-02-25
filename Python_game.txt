@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import PhotoImage 
 
+#Les deux classes Mob et Player, il manque encore Bullet pour les balles, en gros on définit des objets "types", des sortes de modèles
 class Mob:
     def __init__(self, x_position, life):
         self.x_position = x_position
@@ -13,6 +14,7 @@ class Player:
         #self.image = PhotoImage(file=player_img_path)
         self.life = life
 
+# Là c'est un menu pause qui se  déclanche en appuyant sur la touche echap
 def pause_menu():
     print("Entered pause menu")
     pause = tk.Toplevel()
@@ -23,6 +25,7 @@ def pause_menu():
     restart.pack()
     pause.grab_set()
 
+# Ici on détermine ce qu'on fait suivant les touches pressées
 def keypress(event):
     if event.keysym == "d":
         player.position += 1
@@ -36,19 +39,19 @@ def keypress(event):
         
 
 
-# Création de la fenêtre
+# Création de la fenêtre principale
 main = tk.Tk()
 main.title("Space Invaders")
 main.geometry("700x500+300+200")
 main.configure(background="black")
 
-# Configuration des sprites
+# Configuration des sprites, où on indique les images sources, c'est encore très brut (pas de resizing ou quoi, mais de toutes façons, je n'arive pa sà le faire marcher 
 mob_img_path = "mob.png"
 player_img_path ="player.png"
 bullet_img_path = ""
 
 
-# Création des objets
+# Création des objets grâce aux classes
 mob1 = Mob(1, 1)
 mob2 = Mob(2, 1)
 mob3 = Mob(3, 1)
@@ -56,7 +59,8 @@ mob4 = Mob(4, 1)
 mob5 = Mob(5, 1)
 player = Player(10, 3)
 
-
+# ça c'est l'outil pour déclancher un évenement quand une touche est pressé, qui est donc analysé par la fonction plus haut
 main.bind("<Key>", keypress)
 
+# La loop principale de la fenêtre
 main.mainloop()
