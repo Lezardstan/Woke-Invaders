@@ -7,35 +7,35 @@ Space invaders:
 
 #LE BUT DE CE FICHIER EST DE LISTER CE QUE LE JEU DOIT FAIRE ET QUELS OBJETS EXISTENT EN LUI
 #IL TENTE DE LISTER EGALEMENT LA LOGIQUE INTERNE;
-#J'AI TOUT MMIS EN ANGLAIS PARSQUE LES VARIABLES EN FRANCAIS C'EST INFERNAL
+#J'AI TOUT MIS EN ANGLAIS PARSQUE LES VARIABLES EN FRANCAIS C'EST INFERNAL
 
 CLASSES:
-- enemies{
-	size: square: hitbox & sprite
-	coordonates: x & y
-	state (damaged / alive or dead)
-	movement left/right
-	sprite, shape(s) ?
-}
-- player{
-	size: square
-	coordonates: x & y
-	state (damaged / alive or dead): 3 values 0, 1 and 2
-	movement: dictated by player input
-	sprite
-}
-- bullets{
-	size
-	coordonates
-	movement
-	sprite
-}
-- enemies_bullets{
-	size
-	coordonates
-	movement
-	sprite
-}
+- enemies
+	--size: square: hitbox & sprite
+	--coordonates: x & y
+	--state (damaged / alive or dead)
+	--movement left/right
+	--sprite, shape(s) ?
+
+- player
+	--size: square
+	--coordonates: x & y
+	--state (damaged / alive or dead): 3 values 0, 1 and 2
+	--movement: dictated by player input
+	--sprite
+
+- bullets
+	--size
+	--coordonates
+	--movement
+	--sprite
+
+- enemies_bullets
+	--size
+	--coordonates
+	--movement
+	--sprite
+
 
 create main window
 Start at main menu
@@ -47,20 +47,23 @@ Start at main menu
 
 
 The game always start in the same state
-* enemy.state = 1
-* player.life = 3
-* direction = random 0 or 1
-* 
+enemy.state = 1
+player.life = 3
+direction = random 0 or 1
+  
 Enemies goes back and forth left and right at a fixed speed
-	When the far most right touch the right edge, they reverse direction
-	When the far most left touch the left edge, they reverse direction
+	- When the far most right touch the right edge, they reverse direction
+	- When the far most left touch the left edge, they reverse direction
+
 Enemies fire bullets every x seconds
-	
-	They come from one of the sprite (random ?)
-If a bullet hits an enemy, it disappear 
+
+They come from one of the sprite (random ?)
+
+If a bullet hits an enemy, it disappear
+
 If an "enemies_bullets" hits the player:
-	player.life = player.life - 1
-	If number of life = 0 ==> Game Over ==> Back to main menu
+	- player.life = player.life - 1
+	- If number of life = 0 ==> Game Over ==> Back to main menu
 
 pause_menu: stops the game while displaying a windows with two buttons to quit or continue 
 
