@@ -14,7 +14,7 @@ class Player:
         #self.image = PhotoImage(file=player_img_path)
         self.life = life
 
-# Là c'est un menu pause qui se  déclanche en appuyant sur la touche echap
+# Là c'est un menu pause qui se  déclenche en appuyant sur la touche echap
 def pause_menu():
     print("Entered pause menu")
     pause = tk.Toplevel()
@@ -36,8 +36,13 @@ def keypress(event):
     if event.keysym == "Escape":
         pause_menu()
     print(event.keysym)
-        
 
+def ticking(event)
+    global ticks
+    ticks +=1
+
+def mob_movement(event):
+    
 
 # Création de la fenêtre principale
 main = tk.Tk()
@@ -59,8 +64,12 @@ mob4 = Mob(4, 1)
 mob5 = Mob(5, 1)
 player = Player(10, 3)
 
-# ça c'est l'outil pour déclancher un évenement quand une touche est pressé, qui est donc analysé par la fonction plus haut
+# ça c'est l'outil pour déclencher des évenement:
+# Quand une touche est pressée:
 main.bind("<Key>", keypress)
+
+# Le temps qui passe (je sais pas encore précisément mais je me dis que ça peux servir)
+main.after(20, ticking)
 
 # La loop principale de la fenêtre
 main.mainloop()
