@@ -1,21 +1,23 @@
 import tkinter as tk
 from tkinter import PhotoImage 
 
+
 #Les deux classes Mob et Player, il manque encore Bullet pour les balles, en gros on définit des objets "types", des sortes de modèles
 class Mob:
     def __init__(self, x_position, life):
         self.x_position = x_position
-        #self.image = PhotoImage(file=mob_img_path)
+        #self.image = mob_image
         self.life = life
 
 class Player:
     def __init__(self, position, life):
         self.position = position
-        #self.image = PhotoImage(file=player_img_path)
+        #self.image = player_image
         self.life = life
 
 # Là c'est un menu pause qui se  déclenche en appuyant sur la touche echap
 def pause_menu():
+    
     print("Entered pause menu")
     pause = tk.Toplevel()
     pause.geometry("200x200+500+300")
@@ -37,23 +39,36 @@ def keypress(event):
         pause_menu()
     print(event.keysym)
 
-def ticking(event)
+def ticking(event):
     global ticks
     ticks +=1
 
-def mob_movement(event):
+#def mob_movement(event):
     
 
 # Création de la fenêtre principale
 main = tk.Tk()
 main.title("Space Invaders")
 main.geometry("700x500+300+200")
-main.configure(background="black")
+main.configure(background="grey")
 
 # Configuration des sprites, où on indique les images sources, c'est encore très brut (pas de resizing ou quoi, mais de toutes façons, je n'arive pa sà le faire marcher 
-mob_img_path = "mob.png"
-player_img_path ="player.png"
+mob_img_path = "E:/Documents/Travail/TSTN/rendus/Python/mob_reduced.png"
+player_img_path ="E:/Documents/Travail/TSTN/rendus/Python/player_reduced.png"
 bullet_img_path = ""
+
+mob_image = PhotoImage(file=mob_img_path)
+player_image = PhotoImage(file=player_img_path)
+
+
+parent_mob = tk.Label(main, image=mob_image)
+parent_player = tk.Label(main, image=player_image)
+
+
+
+
+parent_mob.pack()
+parent_player.pack()
 
 
 # Création des objets grâce aux classes
@@ -63,6 +78,7 @@ mob3 = Mob(3, 1)
 mob4 = Mob(4, 1)
 mob5 = Mob(5, 1)
 player = Player(10, 3)
+
 
 # ça c'est l'outil pour déclencher des évenement:
 # Quand une touche est pressée:
