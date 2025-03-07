@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import PhotoImage 
 
-
 #Les deux classes Mob et Player, il manque encore Bullet pour les balles, en gros on définit des objets "types", des sortes de modèles
-class Mob:
+class Mobs:
     def __init__(self, x_position, life):
         self.x_position = x_position
         #self.image = mob_image
@@ -15,9 +14,12 @@ class Player:
         #self.image = player_image
         self.life = life
 
+class Bullets:
+    def __init__(self, b_position):
+        self.position = b_position
+
 # Là c'est un menu pause qui se  déclenche en appuyant sur la touche echap
 def pause_menu():
-    
     print("Entered pause menu")
     pause = tk.Toplevel()
     pause.geometry("200x200+500+300")
@@ -39,53 +41,90 @@ def keypress(event):
         pause_menu()
     print(event.keysym)
 
-def ticking(event):
-    global ticks
-    ticks +=1
+# Gestion de la variable de direction de mouvement des mobs
+def ticking(t):
+    if t == 1:
+        print(t)
+        t = -1
+    elif t == -1:
+        print (t)
+    check_collision()
+    direction_mobs()
+    move_mob()
+    main.after(50, ticking(t))
 
-#def mob_movement(event):
-    
+
+# Gestion collision balles/mob ou balles/player
+def check_collision():
+    for bullet in Bullets:
+        if bullet.position == player.position: # Si la position de la balle est au niveau du joueur:
+            bullet.destroy() # on détruit la balle testée
+            player.life -= 1 # on décrémente le compteur de vie du joueur
+        for mob in Mobs:
+            if bullet.position == mob.x_position: # Si la position de la balle est égale à la positiond 'un mob
+                mob.destroy # on détruit la balle testée
+                bullet.destroy() # On détruit le mob concerné
+
+# déplacement des mobs:
+# Si la variable "direction" est de 1, les mobs vont vers la droite (mob.position + 1)
+# Sinon il vont à gauche (mob.position - 1)
+def move_mob():
+    for mob in Mobs:
+        mob.x_position = mob.x_position + direction 
+
+# Fonction pour changer la direction si un des mobs touche le bord de l'écran
+def direction_mobs():
+    for mob in Mobs:
+        if mob.x_position == 700: # Si il touche le bord droit, on définit la direction vers la gauche
+            direction = -1
+        if mob.x_position == 0: # Sinon on définit vers la droite
+            direction = 1
+
+
 
 # Création de la fenêtre principale
 main = tk.Tk()
 main.title("Space Invaders")
 main.geometry("700x500+300+200")
-main.configure(background="grey")
+main.configure(background="black")
 
 # Configuration des sprites, où on indique les images sources, c'est encore très brut (pas de resizing ou quoi, mais de toutes façons, je n'arive pa sà le faire marcher 
-mob_img_path = "E:/Documents/Travail/TSTN/rendus/Python/mob_reduced.png"
-player_img_path ="E:/Documents/Travail/TSTN/rendus/Python/player_reduced.png"
+mob_img_path = "C:/Users/RDP_Access/Documents/SUPPORTS DE COURS/Découverte du code - Robotique Python/fsi-main/mob.png"
+player_img_path ="C:/Users/RDP_Access/Documents/SUPPORTS DE COURS/Découverte du code - Robotique Python/fsi-main/player.png"
 bullet_img_path = ""
 
+# Chargement des images dans le programme
 mob_image = PhotoImage(file=mob_img_path)
 player_image = PhotoImage(file=player_img_path)
 
-
 parent_mob = tk.Label(main, image=mob_image)
-parent_player = tk.Label(main, image=player_image)
-
-
-
+parent_player = tk.Label(main, image=player_image,)
 
 parent_mob.pack()
 parent_player.pack()
 
+# Initialisations des variables
+global reverse
+global ticks
+global direction
+ticks = 0
+reverse = 0
+direction = 1
 
 # Création des objets grâce aux classes
-mob1 = Mob(1, 1)
-mob2 = Mob(2, 1)
-mob3 = Mob(3, 1)
-mob4 = Mob(4, 1)
-mob5 = Mob(5, 1)
+mob1 = Mobs(1, 1)
+mob2 = Mobs(2, 1)
+mob3 = Mobs(3, 1)
+mob4 = Mobs(4, 1)
+mob5 = Mobs(5, 1)
 player = Player(10, 3)
-
 
 # ça c'est l'outil pour déclencher des évenement:
 # Quand une touche est pressée:
 main.bind("<Key>", keypress)
 
-# Le temps qui passe (je sais pas encore précisément mais je me dis que ça peux servir)
-main.after(20, ticking)
-
+# Le temps qui passe, permet de lancer la fonction qui va tourner en boucle toutes les secondes 
+# Pour updater les positions (voir la fonction ticking)
+ticking(0)
 # La loop principale de la fenêtre
 main.mainloop()
