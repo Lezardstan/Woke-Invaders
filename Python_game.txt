@@ -5,14 +5,20 @@ from tkinter import PhotoImage
 class Mobs:
     def __init__(self, x_position, life):
         self.x_position = x_position
-        #self.image = mob_image
+        self.image = parent_mob
         self.life = life
-
+    def destroy(self):
+        del self
+            
+        
 class Player:
     def __init__(self, position, life):
         self.position = position
-        #self.image = player_image
+        self.image = player_image
         self.life = life
+        parent_player.pack()
+
+
 
 class Bullets:
     def __init__(self, b_position):
@@ -62,8 +68,8 @@ def check_collision():
             player.life -= 1 # on décrémente le compteur de vie du joueur
         for mob in Mobs:
             if bullet.position == mob.x_position: # Si la position de la balle est égale à la positiond 'un mob
-                mob.destroy # on détruit la balle testée
-                bullet.destroy() # On détruit le mob concerné
+                mob.destroy # On détruit le mob concerné
+                bullet.destroy() # on détruit la balle testée
 
 # déplacement des mobs:
 # Si la variable "direction" est de 1, les mobs vont vers la droite (mob.position + 1)
@@ -79,37 +85,34 @@ def direction_mobs():
             direction = -1
         if mob.x_position == 0: # Sinon on définit vers la droite
             direction = 1
+#Initialisations de variables:
 
+#chemin du dossier en dur - Possibilité de le faire en automatique avec une fonction éventuellement
+path = "C:/Users/RDP_Access/Documents/SUPPORTS DE COURS/Découverte du code - Robotique Python/fsi-main/"
 
-
-# Création de la fenêtre principale
-main = tk.Tk()
-main.title("Space Invaders")
-main.geometry("700x500+300+200")
-main.configure(background="black")
-
-# Configuration des sprites, où on indique les images sources, c'est encore très brut (pas de resizing ou quoi, mais de toutes façons, je n'arive pa sà le faire marcher 
-mob_img_path = "C:/Users/RDP_Access/Documents/SUPPORTS DE COURS/Découverte du code - Robotique Python/fsi-main/mob.png"
-player_img_path ="C:/Users/RDP_Access/Documents/SUPPORTS DE COURS/Découverte du code - Robotique Python/fsi-main/player.png"
-bullet_img_path = ""
-
-# Chargement des images dans le programme
-mob_image = PhotoImage(file=mob_img_path)
-player_image = PhotoImage(file=player_img_path)
-
-parent_mob = tk.Label(main, image=mob_image)
-parent_player = tk.Label(main, image=player_image,)
-
-parent_mob.pack()
-parent_player.pack()
-
-# Initialisations des variables
 global reverse
 global ticks
 global direction
 ticks = 0
 reverse = 0
 direction = 1
+
+
+# Chemin d'accès des images
+mob_img_path = f"{path}mob.png"
+player_img_path =f"{path}player.png"
+bullet_img_path = f"{path}bullet.png"
+
+# Chargement des images dans le programme
+mob_image = PhotoImage(file=mob_img_path)
+player_image = PhotoImage(file=player_img_path)
+
+# Création des sprites dans des objets Label
+parent_player = tk.Label(main, image=player_image)
+parent_mob = tk.Label(main, image=mob_image)
+
+
+
 
 # Création des objets grâce aux classes
 mob1 = Mobs(1, 1)
@@ -118,6 +121,15 @@ mob3 = Mobs(3, 1)
 mob4 = Mobs(4, 1)
 mob5 = Mobs(5, 1)
 player = Player(10, 3)
+
+# Création de la fenêtre principale
+main = tk.Tk()
+main.title("Space Invaders")
+main.geometry("700x500+300+200")
+main.configure(background="black")
+
+parent_mob.pack()
+parent_player.pack()
 
 # ça c'est l'outil pour déclencher des évenement:
 # Quand une touche est pressée:
