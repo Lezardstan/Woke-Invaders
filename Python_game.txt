@@ -7,8 +7,8 @@ class Mobs:
         self.x_position = x_position
         self.image = parent_mob
         self.life = life
-    def destroy(self):
-        del self
+    def destroy(self): # Cette fonction permettrait de détruire l'objet en cas de déclenchement de la fonction
+        del self # A tester
             
         
 class Player:
@@ -31,29 +31,32 @@ def pause_menu():
     pause.geometry("200x200+500+300")
     pause.title("PAUSE")
     pause.configure(background="white")
-    restart = tk.Button(pause, text="Reprendre", command=pause.destroy)
+    restart = tk.Button(pause, text="Reprendre", command=pause.destroy) #Créatioin du boutton pour reprendre, qui, si cliqué, détruit le menu pause
+    quit_button = tk.Button(pause,text="Quitter", command=main.quit) #Création du boutton pour quitter le jeu, qui si enclenché effectue la command "quit" qui ferme le programme, on pourrait mettre une infobulle de confirmation avant pour éviter le misclick
     restart.pack()
-    pause.grab_set()
+    quit_button.pack()
+    pause.grab_set() #Grabset let en pause la fenetre principale et empeche les input d'arriver dans la fenetre principale
 
 # Ici on détermine ce qu'on fait suivant les touches pressées
 def keypress(event):
-    if event.keysym == "d":
+    if event.keysym == "d": #La touche "d" pour aller à droite
         player.position += 1
         print(player.position)
-    if event.keysym == "q":
+    if event.keysym == "q": #La touche "q" pour aller à gauche
         player.position -= 1
         print(player.position)
-    if event.keysym == "Escape":
+    if event.keysym == "Escape": #La touche échap pour mettre le menu pause
         pause_menu()
     print(event.keysym)
 
-# Gestion de la variable de direction de mouvement des mobs
+# Gestion du temps, qui permet de checker les différentes fonctions toutes les x secondees en se rappelant elle même (ici 50ms)
 def ticking(t):
     if t == 1:
         print(t)
-        t = -1
-    elif t == -1:
+        t += 1
+    elif t == 50:
         print (t)
+        t = 0
     check_collision()
     direction_mobs()
     move_mob()
@@ -85,7 +88,7 @@ def direction_mobs():
             direction = -1
         if mob.x_position == 0: # Sinon on définit vers la droite
             direction = 1
-#Initialisations de variables:
+#Initialisations des variables:
 
 #chemin du dossier en dur - Possibilité de le faire en automatique avec une fonction éventuellement
 path = "C:/Users/RDP_Access/Documents/SUPPORTS DE COURS/Découverte du code - Robotique Python/fsi-main/"
