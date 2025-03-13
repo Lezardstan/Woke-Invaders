@@ -7,6 +7,7 @@ class Mobs:
         self.x_position = x_position
         self.image = parent_mob
         self.life = life
+        parent_mob.place(relx=self.x_position, rely=0.1, anchor='center')
     def destroy(self): # Cette fonction permettrait de détruire l'objet en cas de déclenchement de la fonction
         del self # A tester
             
@@ -16,7 +17,7 @@ class Player:
         self.position = position
         self.image = player_image
         self.life = life
-        parent_player.pack()
+        parent_player.place(relx=0.5,rely=self.position, anchor='center')
 
 
 
