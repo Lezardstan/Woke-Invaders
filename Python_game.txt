@@ -89,6 +89,12 @@ def direction_mobs():
             direction = -1
         if mob.x_position == 0: # Sinon on définit vers la droite
             direction = 1
+
+# def check_life_player
+    if player.life == 0:
+        messagebox.showerror("Gave Over", "Vous êtes mort")
+        main.quit()
+
 #Initialisations des variables:
 
 #chemin du dossier en dur - Possibilité de le faire en automatique avec une fonction éventuellement
