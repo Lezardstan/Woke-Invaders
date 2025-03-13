@@ -3,13 +3,16 @@ from tkinter import PhotoImage
 
 #Les deux classes Mob et Player, il manque encore Bullet pour les balles, en gros on définit des objets "types", des sortes de modèles
 class Mobs:
+    instances = 0
     def __init__(self, x_position, life):
         self.x_position = x_position
         self.image = parent_mob
         self.life = life
         parent_mob.place(relx=self.x_position, rely=0.1, anchor='center')
+        instances += 1
     def destroy(self): # Cette fonction permettrait de détruire l'objet en cas de déclenchement de la fonction
         del self # A tester
+        instances -= 1
             
         
 class Player:
@@ -90,11 +93,15 @@ def direction_mobs():
         if mob.x_position == 0: # Sinon on définit vers la droite
             direction = 1
 
-# def check_life_player
-    if player.life == 0:
-        messagebox.showerror("Gave Over", "Vous êtes mort")
-        main.quit()
+# def check_life_player():
+#    if player.life == 0:
+#        messagebox.showerror("Gave Over", "Vous êtes mort")
+#        main.quit()
 
+# def check_no_mobs():
+#    if Mobs.instances == 0:
+#        messagebox.showinfo("Félicitations !", "Vous avez gagné youpi")
+#        main.quit()
 #Initialisations des variables:
 
 #chemin du dossier en dur - Possibilité de le faire en automatique avec une fonction éventuellement
