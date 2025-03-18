@@ -4,32 +4,37 @@ from tkinter import messagebox
 import random
 from PIL import Image
 from playsound import playsound
-# Pour le fun, on a mis des petits sons
-# Se référer au readme.txt pour installation
+
+#########################################IMPORTANT#####################################################
+# Se référer au readme.txt pour installation car on utilise des bibliothèque qui ne sont pas par défaut
+#######################################################################################################
+
 
 ################ Initialisations des variables ################
 
-global direction
-global pause
-global lifes
+global direction                        # Détermine la direction initiale des mobs, utilisée dans les classes, voir plus bas pour initialisation
+global pause                    
+global lifes 
 global mode_gamemode
 global frame
 global gm
 global wave_counter
-global victory
+global victory                          
 
-# Ici les valeurs par défaut du jeu si jamais le joueur ne séléctionne pas de mode de jeu
-lifes = 1 # Nombre de vie du joueur
-fire_rate = 5 # Le nombre de cycle de ticking au bout duquel le mobs tirent
-vitesse_ticks = 20 # La vitesse du jeu; combien de nanosecondes entre chaque itération de la fonction ticking  (env 50fps ici)
-mode_gamemode = -1 #Le mode de jeu, se référer à la fonction gamemode pour le détail
-frame = 0 # Cette variable s'incrémente à chaque tick, et si elle atteint le nombre d'image du GIF, elle est réinitialisée
-warnings = ""
-gm = "Mode Interdit"
-wave_counter = 0
-pause = False
-victory = 0
-path = "E:/Documents/Code/fsi-main/" # Chemin d'accès par défaut / A MODIFIER SI CHANGEMENT DE POSTE
+### Ici les valeurs par défaut du jeu si jamais le joueur ne séléctionne pas de mode de jeu et ferme le menu comme un sauvage ###
+
+lifes = 1                               # Nombre de vie du joueur
+fire_rate = 5                           # Le nombre de cycle de ticking au bout duquel le mobs tirent
+vitesse_ticks = 20                      # La vitesse du jeu; combien de nanosecondes entre chaque itération de la fonction ticking  (env 50fps ici)
+mode_gamemode = -1                      #Le mode de jeu, se référer à la fonction gamemode pour le détail
+frame = 0                               # Cette variable s'incrémente à chaque tick, et si elle atteint le nombre d'image du GIF, elle est réinitialisée
+warnings = ""                           # Affichage avec des infos
+gm = "Mode Interdit"                    # Nom du mode de jeu
+wave_counter = 0                        # Nombre de coups spéciaux
+pause = False                           # Statut de la pause
+victory = 0                             # Etat de victoire, si victory = 1 alors fin du jeu
+path = "E:/Documents/Code/fsi-main/"    # Chemin d'accès par défaut / A MODIFIER SI CHANGEMENT DE POSTE
+
 
 # Ici on randomise la direction initale des mobs (1 ou -1)
 direction = random.randint(-1, 1)
@@ -37,9 +42,9 @@ while direction == 0:
     direction = random.randint(-1, 1)
 
 # Les listes des objets à parcourir
+# Elles sont explicitées plus bas
 Liste_mobs = []
 Liste_bullets = []
-Liste_player = []
 Liste_wave = []
 background_images = []
 
@@ -50,49 +55,49 @@ player_shoot_img_path = f"{path}images/player_shoot.png"
 player_hit_img_path = f"{path}images/player_hit.png"
 bullet_img_path = f"{path}images/bullet.png"
 missile_img_path = f"{path}images/missile.png"
-background_img_path = f"{path}images/background.gif"
+background_img_path = f"{path}images/background3.gif"
 bullet_mob_img_path = f"{path}images/bullet_mob.png"
 explosion_img_path = f"{path}images/explosion.png"
 fumees_img_path = f"{path}images/fumees.png"
 wave_img_path = f"{path}images/wave.png"
-
+brandon_img_path = f"{path}images/brandon.png"
+gallery_sounds = ["biden_holy_f.mp3", "obamna.mp3", "cmon_man.mp3", "skill_issue.mp3", "you_are_fake_news.mp3", "fake_news.mp3", "wall.mp3", "bing-bong.mp3", 
+                "win.mp3", "approve.mp3"]
 ################ CLASSES ################
 
 # Les différents mobs présents à l'écran
 class Mobs:
-    def __init__(self, canvas, x_position):  
+    def __init__(self, x_position):  
         self.x_position = x_position
-        self.y_position = 70
-        self.can = canvas
-        self.sprite = canvas.create_image(self.x_position, self.y_position, image=mob_image)
+        self.y_position = 100
+        self.sprite = canva.create_image(self.x_position, self.y_position, image=mob_image)
         return
 # Si le mob est touché, son sprite est supprimé et il est retiré de la liste des mobs
     def hit(self):
         print("hit!")
-        self.can.delete(self.sprite)
+        canva.delete(self.sprite)
         Liste_mobs.remove(self)
         return
 # Les mobs se déplacement en ligne droite, si l'un d'eux atteint un bord, alors la variable "direction" change et leur 
 # déplacement est inversé
     def mob_move(self):
         global direction
-        if self.x_position >= 495:
+        if self.x_position >= 850:
             direction = -1
         elif self.x_position <= 5:
             direction = 1
         if pause == True:
             return
-        self.can.move(self.sprite, (direction * 4), 0)
+        canva.move(self.sprite, (direction * 4), 0)
         self.x_position += (4 * direction)
         return
 
 # La classe player qui n'est instanciée qu'une fois avec le joueur
 class Player:
-    def __init__(self, canva, position, life):
-        self.can = canva
+    def __init__(self, position, life):
         self.position = position
         self.life = life
-        self.y_position = 450
+        self.y_position = 700
         self.sprite = canva.create_image(self.position, self.y_position, image=player_image)
         return
 
@@ -103,132 +108,143 @@ class Player:
         if self.position < 10:
             canva.coords(self.sprite, 10, coord_player[1])
             self.position = 10
-        elif self.position > 490:
-            canva.coords(self.sprite, 490, coord_player[1])
-            self.position = 490
-        elif self.y_position > 490:
-            canva.coords(self.sprite, coord_player[0], 485)
-            self.position = 490
-        self.can.move(self.sprite, valuex, valuey)
+        elif self.position > 850:
+            canva.coords(self.sprite, 850, coord_player[1])
+            self.position = 850
+        elif self.y_position > 1000:
+            canva.coords(self.sprite, coord_player[0], 1000)
+            self.position = 1000
+        canva.move(self.sprite, valuex, valuey)
         return
     
     def check_life(self):
         if self.life <= 0:
-            canva.delete(self.sprite)
-            self.sprite = canva.create_image(self.position, self.y_position, image=explosion_image)
+            canva.delete(self.sprite) # Supression de l'image originale 
+            self.sprite = canva.create_image(self.position, self.y_position, image=explosion_image) # Remplacement de ladite image par une explosion
+            canva.after('1000')
             playsounds(5)
             messagebox.showerror("Game Over", "Le wokisme est mort")
             if mode_gamemode == -1:
                 messagebox.showinfo("Bien tenté", "Fallait séléctionner un mode de jeu :)")
             main.quit()
         return
-    def player_shoot(self):
-        print("tir !")
-        Liste_bullets.append(Bullets(canva, self.position, self.y_position, 1))
-        canva.delete(self.sprite)
+    def player_shoot(self): 
+        print("tir !")                                                                              # Affichage dans le temrinal
+        Liste_bullets.append(Bullets(self.position, self.y_position - 19, 1))                       # On créé une balle que l'on rajouter à la liste, avec une position 19px au dessus du joueur
+        canva.delete(self.sprite)                                                                   # Sur ces lignes, on remplace le sprite du joueur par une image du joueur qui tire
         self.sprite = canva.create_image(self.position, self.y_position - 19, image=player_shoot)
-        main.after('100', self.back_to_main_sprite)
+        main.after('100', self.back_to_main_sprite)                                                 # après 1s, on reviens au sprite normal
         return
-    def back_to_main_sprite(self):
+    
+    def back_to_main_sprite(self):                                                                  # On utilise une fonction pour faciliter l'utilisation de la fonction "after"
         canva.delete(self.sprite)
         self.sprite = canva.create_image(self.position, self.y_position, image=player_image)
         return
     
-    def wave_shoot(self):
-        Liste_wave.append(Wave(canva, self.position, self.y_position))
+    def wave_shoot(self):                                                                           # Le coup spécial, avec une idée similaire que pour les tirs classique
+        Liste_wave.append(Wave(self.position, self.y_position))
 
 # La classe Bullet qui comprend toutes les balles, du joueur et des mobs
 class Bullets:
-    def __init__(self, canvas, x_position, y_position, mode=1):
+    def __init__(self, x_position, y_position, mode=1):
         self.y_position = y_position
-        self.can = canvas
-        self.mode = mode
-        if mode == 1: 
-            self.y_position = player.y_position - 15
+        self.mode = mode                                # Le mode indique si la balle provient du joueur ou d'un mob
+        if mode == 1:                                   # Selon ce mode, elles ont une position initiale différente, un sens inversé et un spread dans le cas des mobs
+            self.y_position = player.y_position - 25
             self.x_position = x_position
-            self.sprite = canvas.create_image(self.x_position, self.y_position, image=missile_image)
+            self.sprite = canva.create_image(self.x_position, self.y_position, image=missile_image)
+            self.spread = 0                             # spread = 0 signifie aucun déplacement horizontal
         else:
             self.x_position = x_position
-            self.y_position = 85
-            self.sprite = canvas.create_image(self.x_position, self.y_position, image=bullet_mob_image)
-            
-
-        self.move_bullet(mode) 
+            self.y_position = 120
+            self.sprite = canva.create_image(self.x_position, self.y_position, image=bullet_mob_image)
+            self.s = random.randint(-1, 1)              # Le spread est généré comme pour la direction initiale, -1 ou +1
+            while self.s == 0:
+                self.s = random.randint(-1, 1)
+            self.spread = -5 * self.s                   # qu'on multiplie par 5 pour avoir une direction horizontale que l'on peut intégrer dans la fonction de mouvement
+        self.move_bullet(mode)                          # Une fois générée, la fonction move_bullet est appelée, et un premier check de collision est fait.
         return
 
     def move_bullet(self, mode):
         self.mode = mode
-        if pause == True:
+        if pause == True:                               # Si la pause est pressée, alors on arrête la fonction 
             return
-        if mode == 1:
-            self.y_position -= 10
-            self.can.move(self.sprite, 0, -10)
+        if mode == 1:                                   # Selon le mode, la balle va dans un sens u dans l'autre.
+            self.y_position -= 20                       # Les balles du joueur vont plus vite que cette des mobs.
+            canva.move(self.sprite, self.spread, -20)
         elif mode == 0:
             self.y_position += 5
-            self.can.move(self.sprite, 0, 5)
+            self.x_position += self.spread
+            canva.move(self.sprite, self.spread, 5)
+            
         self.check_collision()
         return
 
     def check_collision(self):        
-        if abs(self.y_position - player.y_position) < 15 and abs(self.x_position - player.position) < 15:
-            canva.delete(player.sprite)
+        if abs(self.y_position - player.y_position) < 30 and abs(self.x_position - player.position) < 30: # En cas de collision avec le joueur (Si le centre de la balle est dans le carré de 30x30 autour du centre du joueur)
+            canva.delete(player.sprite)                     # On remplace le sprite joueur par celui du joueur touché
             player.sprite = canva.create_image(player.position, player.y_position, image=player_hit_image)
-            Liste_bullets.remove(self)
-            self.can.delete(self.sprite)
-            player.life -= 1
-            canva.after('1000', player.back_to_main_sprite)
+            Liste_bullets.remove(self)                      # On supprime la balle de la liste
+            canva.delete(self.sprite)                       # On supprime le sprite
+            player.life -= 1                                # On retire 1 du compteur de vie du joueur
+            canva.after('1000', player.back_to_main_sprite) # Après une seconde, on reviens au sprite normal du joueur
             return
                 
         for mob in Liste_mobs:
-            if abs(self.y_position - mob.y_position) < 12 and abs(self.x_position - mob.x_position) < 12:
+            if abs(self.y_position - mob.y_position) < 20 and abs(self.x_position - mob.x_position) < 20:
 # Ici on modifie l'image du sprite par cette d'une explosion et on attend une seconde avant de supprimer le sprite
 # On supprime la balle immediatement celà dit
                 canva.delete(mob.sprite)
+                playsounds(3)
                 mob.sprite = canva.create_image(self.x_position, self.y_position, image=explosion_image) 
                 Liste_bullets.remove(self)
-                self.can.delete(self.sprite)
+                canva.delete(self.sprite)
                 canva.after('1000', mob.hit)
                 return
 
-        if self.y_position >= 480 or self.y_position <= 0:
-            self.can.delete(self.sprite)
-            Liste_bullets.remove(self)
+        if self.y_position >= 1000 or self.y_position <= 0: # Si les balles dépassent les bord haut les bas de l'écran,
+            canva.delete(self.sprite)                       # Elles sont retirées du canva
+            Liste_bullets.remove(self)                      # Et supprimées de la liste
+            return
+        if self.x_position >= 860 or self.x_position <= 0:  # Si elles touchent un bord droit ou gauche
+            self.spread = self.spread * -1                  # leur direction horizontale s'inverse
             return
 
 # Dernière classe ajoutée un peu dernière minute: un pouvoir spécial d'attaque qui permet de contrer les balles ennemies
+# Les waves fonctionnent comme les balles à deux différences: Elles ne vérifient ni les collisions avec le joueur ni les mobs, seulement avec les balles
+# Seconde différences: 
+# Elles disparaissent au bout d'un certain nombre de cycles (déplacement/check_collision) (self.step) OU d'un certain nombre de balles arrêtées (self.stop)
 class Wave:
-    def __init__(self, canva, x_position, y_position):
-        self.steps = 40
+    def __init__(self, x_position, y_position):
+        self.steps = 60                         # Le compteur de cycles
+        self.stop = 5                           # Nombre de balles que le vague peut arrêter
         self.x_position = x_position
         self.y_position = y_position
-        self.can = canva
         self.sprite = canva.create_image(self.x_position, self.y_position -20, image=wave_image)
-    
     def move_wave(self):
         if pause == True:
             return
-        self.steps -= 1
+        self.steps -= 1                         # Là où le compteur de cycle est diminué
         self.y_position -= 5
-        self.can.move(self.sprite, 0, -5)
-        self.check_collision(self.steps)
+        canva.move(self.sprite, 0, -5)
+        self.check_collision(self.steps, )      # On lui envoi la variable également
         return
         
     def check_collision(self, steps):
-        if steps == 0:
+        if steps == 0:                          # Si le nombre de steps atteint 0, la vague déspawn
             Liste_wave.remove(self)
-            self.can.delete(self.sprite)
+            canva.delete(self.sprite)
             return
         for bullet in Liste_bullets:
-            self.stop = 3
-            if abs(self.y_position - bullet.y_position) < 30 and abs(self.x_position - bullet.x_position) < 80 :
-                bullet.can.delete(bullet.sprite)
+            if abs(self.y_position - bullet.y_position) < 30 and abs(self.x_position - bullet.x_position) < 100 :
+                canva.delete(bullet.sprite)
                 Liste_bullets.remove(bullet)
                 print("balle arrêtée")
                 self.stop -=1
                 if self.stop <= 0:
                     Liste_wave.remove(self)
-                    self.can.delete(self.sprite)
-        
+                    canva.delete(self.sprite)
+                    return
         return
 
 ################ FONCTIONS DE JEU ################
@@ -255,42 +271,37 @@ def ticking(t):
     
     # On enclenche les fonction de déplacement et on remet les sprite au dessus du background    
     canva.tag_raise(player.sprite)
-
     for wave in Liste_wave:
         wave.move_wave()
         canva.tag_raise(wave.sprite)
-
     for mob in Liste_mobs:
         mob.mob_move()
         canva.tag_raise(mob.sprite)
         
     # On update le label de bas de fenêtre
-    status_bar.config(text=f"Vies restantes: {player.life} // {warnings} Coups spéciaux restant: {wave_counter}")
+    status_bar.config(text=f"Vies restantes: {player.life}   Coups spéciaux restant: {wave_counter} \n {warnings}")
     
     # On vérifie la vie du joueur et la présence de mobs
+    # Cet ordre fait que si le joueur et les mobs sont détruit à la même frame, le joueur perd
     player.check_life()
     victory = check_no_mobs()
     
-    if victory == 1:
-        playsounds(10)
-        messagebox.showinfo("Félicitations", "Le wokisme gagne une nouvelle bataille !")
-        messagebox.showinfo("Félicitations", "Merci d'avoir joué à ce jeu pas ouf")
-        main.quit()
+    # "Ecran" de fin
+    if victory == 1: 
+        run_victory()
     
     # Si la variable t (qui augmente de 1 à chaque tick) est un multiple de fire_rate, 
     # alors les mobs tirent
     if t % fire_rate == 0:
         for mob in Liste_mobs:
-            Liste_bullets.append(Bullets(canva, mob.x_position, 75, 0))
+            Liste_bullets.append(Bullets(mob.x_position, 120, 0))
         # Toutes les 3 salves: BING BONG triple salve
         if t % (fire_rate * 2) == 0 and t != 0:
             for mob in Liste_mobs:
-                Liste_bullets.append(Bullets(canva, mob.x_position -30, 75, 0))
-                Liste_bullets.append(Bullets(canva, mob.x_position + 30, 75, 0))
+                Liste_bullets.append(Bullets(mob.x_position -30, 120, 0))
+                Liste_bullets.append(Bullets(mob.x_position + 30, 120, 0))
             playsounds(7)
-        else:
-            playsounds(4)
-    
+
     # Déclenche les fonction "move_bullet" des balles
     for bullet in Liste_bullets:
         bullet.move_bullet(bullet.mode)
@@ -339,22 +350,22 @@ def resume_game(pause_window):
     ticking(0) # Reprise de la fonction du temps qui passe quand on sort du menu pause
     return
 
-# Gestion des touches
+# Gestion des touches, 
 def keypress(event):
     global warnings
     global wave_counter
     if event.keysym == "Right" or event.keysym == "d":
-        player.position += 10
-        player.move_player(10, 0)
+        player.position += 20
+        player.move_player(20, 0)
     if event.keysym == "Left" or event.keysym == "q":
-        player.position -= 10
-        player.move_player(-10, 0)
+        player.position -= 20
+        player.move_player(-20, 0)
     if event.keysym == "Up" or event.keysym == "z":
-        player.y_position -= 10
-        player.move_player(0, -10)
+        player.y_position -= 20
+        player.move_player(0, -20)
     if event.keysym == "Down" or event.keysym == "s":
-        player.y_position += 10
-        player.move_player(0, 10)
+        player.y_position += 20
+        player.move_player(0, 20)
     if event.keysym == "Escape":
         pause_menu()
     if event.keysym == "space":
@@ -362,12 +373,10 @@ def keypress(event):
     if event.keysym == "a":
         if wave_counter != 0:   
             player.wave_shoot()
-            wave_counter -= 1
+            wave_counter -= 1 # compteur de vagues en réserve
             playsounds(2)
-        else:
+        else: # Si wave_counter = 0 alors, le message est updaté et aucune vague ne peut plus être tirée
             warnings = "A COURT DE MUNITIONS SPECIALES !!"
-            
-    
     return
 
 # vérifie si la liste "Liste_mobs" est vide pour gagner la partie
@@ -375,14 +384,25 @@ def check_no_mobs():
     if len(Liste_mobs) == 0:
         return 1
 
+def run_victory():
+    canva.create_image(300, 300, image=brandon_image)
+    canva.create_image(600, 600, image=brandon_image)
+    canva.create_image(300, 600, image=brandon_image)
+    canva.create_image(600, 300, image=brandon_image)
+    playsounds(9)
+    messagebox.showinfo("Félicitations", "Le wokisme gagne une nouvelle bataille !")
+    messagebox.showinfo("Félicitations", "Merci d'avoir joué à ce jeu pas ouf")
+    main.quit() #Fermeture du programme
+    
+
 # Cette fonction permet de center la fenetre dans l'écran principal.
 # Nous mettons des valeurs par défaut pour la fenêtre principale,
 # Nous la réutilisons pour le menu pause, avec d'autres parametre de taille
-def center_window(fenetre, w = 500, h = 525):
-    screen_w=fenetre.winfo_screenwidth()
-    screen_h=fenetre.winfo_screenheight()
-    x = (screen_w // 2) - (w // 2)
-    y = (screen_h //2 ) - (h // 2)
+def center_window(fenetre, w = 1024, h = 860):
+    screen_w=fenetre.winfo_screenwidth()        # Ce type de fonction récupère des informations sur l'écran
+    screen_h=fenetre.winfo_screenheight()       # Les valeurs par défaut (1024x860) sont appliquées pour la fenêtre de selection de niveau
+    x = (screen_w // 2) - (w // 2)              # Cette formule permet de placer la fenêtre au centre
+    y = (screen_h //2 ) - (h // 2)              # x et y représentent le nombre de pixels d'éloignement de la fenetre du coin superieur gauche de l'écran
     fenetre.geometry(f"{w}x{h}+{x}+{y}")
     return
 
@@ -391,33 +411,37 @@ def center_window(fenetre, w = 500, h = 525):
 # à la fonction gamemode
 # On a donc 4 boutons de séléction de diffiulté, et deux Labels pour afficher le titre et les crédits
 def difficulty_selector():
-    start_menu = tk.Toplevel()
+    #Le type TopLevel représente une fenêtre secondaire pour le programme, on créé la fenêtre et on la centre
+    start_menu = tk.Toplevel() 
     center_window(start_menu)
-    background_menu_image = PhotoImage(file=f"{path}images/background.png")
+    
+    # Fond du menu de sélection
+    background_menu_image = PhotoImage(file=f"{path}images/background2.png")
     diff_menu_background = tk.Label(start_menu, image=background_menu_image)
     diff_menu_background.pack()
     
-    #playsounds(9)
+    # On créé les bouttons de sélection et la barre de crédits
+    credits = tk.Label(start_menu, width=860, font=('Arial', 12,'italic'), text="La team VMC (Valentin, Mikael, Charles) ** Tirer: <Espace> ; Coup spécial: <a>")
+    mode_god = tk.Button(start_menu, font=('Arial', 20, 'bold'), text="GodMode", command= lambda: gamemode(start_menu, 0), width=15)
+    mode_fragile = tk.Button(start_menu, font=('Arial', 20, 'bold'), text="Mode Fragile", command= lambda: gamemode(start_menu, 1), width=15)
+    mode_challenge = tk.Button(start_menu, font=('Arial', 20, 'bold'), text="Mode Challenge", command= lambda: gamemode(start_menu, 2), width=15)
+    mode_normal = tk.Button(start_menu, font=('Arial', 20, 'bold'), text="Mode Normal", command= lambda: gamemode(start_menu, 3), width=20)
+    mode_mystere = tk.Button(start_menu, font=('Arial', 20, 'bold'), text="???", command= lambda: gamemode(start_menu, 4), width=15)
     
-    titre = tk.Label(start_menu, text="WOKE INVADERS",font=("Arial", 35, "bold"),  bg='white')
-    credits = tk.Label(start_menu, text="La team VMC (Valentin, Mikael, Charles) ** Tirer: <Espace> ; Coup spécial: <a>")
-    mode_god = tk.Button(start_menu, text="GodMode", command= lambda: gamemode(start_menu, 0), width=20, height=5)
-    mode_fragile = tk.Button(start_menu, text="Fragile", command= lambda: gamemode(start_menu, 1), width=20, height=5)
-    mode_challenge = tk.Button(start_menu, text="Challenge", command= lambda: gamemode(start_menu, 2), width=20, height=5)
-    mode_normal = tk.Button(start_menu, text="Normal", command= lambda: gamemode(start_menu, 3), width=20, height=5)
-    mode_mystere = tk.Button(start_menu, text="???", command= lambda: gamemode(start_menu, 4), width=20, height=5)
-    
-    titre.place(relx=0.5, rely=0.1, anchor='n')
+    # On les place avec des positions relatives
     credits.place(relx=0.5, rely=1, anchor='s')
-    mode_god.place(relx=0.9, rely=0.9, anchor='se')
-    mode_fragile.place(relx=0.1, rely=0.3, anchor='nw')
-    mode_normal.place(relx=0.5, rely=0.6, anchor='center')
-    mode_challenge.place(relx=0.1, rely=0.9, anchor='sw')
-    mode_mystere.place(relx=0.9, rely=0.3, anchor='ne')
+    mode_god.place(relx=0.3, rely=0.85, anchor='n')
+    mode_fragile.place(relx=0.3, rely=0.75, anchor='n')
+    mode_normal.place(relx=0.5, rely=0.1, anchor='n')
+    mode_challenge.place(relx=0.7, rely=0.75, anchor='n')
+    mode_mystere.place(relx=0.7, rely=0.85, anchor='n')
+    
+    # "wait_window" permet de mettre en pause le programme jusqu'à ce que "start_menu" soit permée, 
+    # Ce qui est fait soit manuellement soit en sélectionnant un niveau avec la fonction "gamemode"
     start_menu.wait_window()
     return
 
-# En fonction du mode de jeu choisi, on altère les caractéristiques du jeu (vitesse de tir et nombre de vies)
+# En fonction du mode de jeu choisi, on altère les caractéristiques du jeu (vitesse de tir, nombre de coups spéciaux et nombre de vies)
 def gamemode(menu, mode):
     global mode_gamemode
     global lifes
@@ -427,14 +451,14 @@ def gamemode(menu, mode):
     mode_gamemode = mode
     if mode_gamemode == 0:
         print("mode = Godmode (", mode_gamemode, ")") 
-        lifes = 10000
+        lifes = 100000
         fire_rate = 5
         wave_counter = 1000
         gm = "GodMode"
     elif mode_gamemode == 1:
         print("mode = Fragile (", mode_gamemode, ")") 
         lifes = 1
-        fire_rate = 50
+        fire_rate = 100
         wave_counter = 5
         gm = "Mode Fragile"
     elif mode_gamemode == 2:
@@ -445,7 +469,7 @@ def gamemode(menu, mode):
         gm = "Mode Challenge"
     elif mode_gamemode == 3:
         lifes = 3
-        fire_rate = 50
+        fire_rate = 75
         wave_counter = 7
         print("mode = Normal (", mode_gamemode, ")") 
         gm = "Mode Normal"
@@ -459,11 +483,8 @@ def gamemode(menu, mode):
 
 # Pour la déconne, des petits effets sonores
 def playsounds(sound):
-    gallery_sounds = ["biden_holy_f.mp3", "obamna.mp3", "cmon_man.mp3", "skill_issue.mp3", 
-                    "you_are_fake_news.mp3", "fake_news.mp3", "wall.mp3", "bing-bong.mp3", 
-                    "win.mp3", "main_music.mp3", "approve.mp3"]
     s = f"{path}sounds/{gallery_sounds[sound]}"
-    playsound(s, block=False)
+    playsound(s, block=False) 
     return
 
 # Change le background en fonction du numéro de frame où nous sommes
@@ -471,7 +492,7 @@ def gif_power(frame=0):
     global current_background_image
     current_background = background_images[frame]
     canva.delete(current_background_image) #destruction de la frame précédente
-    current_background_image =canva.create_image(250, 250, image=current_background)
+    current_background_image =canva.create_image(512, 430, image=current_background) # recréation de l'image avec la nouvelle "current_background"
     return 
 
 
@@ -492,7 +513,7 @@ center_window(main)
 main.configure(background="black")
 
 # Création du canevas
-canva = tk.Canvas(main,height=500, width=500)
+canva = tk.Canvas(main,height=1024, width=860)
 canva.pack(anchor=tk.CENTER, expand=False)
 
 # On charge les images dans le programme 
@@ -507,6 +528,7 @@ bullet_mob_image = PhotoImage(file=bullet_mob_img_path)
 background_image = PhotoImage(file=background_img_path)
 fumees_image = PhotoImage(file=fumees_img_path)
 wave_image = PhotoImage(file=wave_img_path)
+brandon_image = PhotoImage(file=brandon_img_path)
 
 #Ici On gère l'aspect GIF du background:
 #D'abord avec le module Image de Pillow, on récupère les informations
@@ -521,33 +543,31 @@ for i in range(frames):
     background_images.append(f)
 
 # On affiche la première image pour pouvoir entemer le cycle de suppression/création dans gif_power
-current_background_image = canva.create_image(250, 250, image=background_images[0])
+current_background_image = canva.create_image(512, 430, image=background_images[0])
 canva.tag_lower(current_background_image)
 
 # Ici on créé "en dur" les mobs
-mob1 = Mobs(canva, 100)
-mob2 = Mobs(canva, 150)
-mob3 = Mobs(canva, 200)
-mob4 = Mobs(canva, 250)
-mob5 = Mobs(canva, 300)
-mob6 = Mobs(canva, 350)
-mob7 = Mobs(canva, 400)
-player = Player(canva, 250, lifes)
+# Leur seul argument est leur position horizontale initiale, déterminé ici par 
+for i in range(8):
+    mob = Mobs(i*80)
+    Liste_mobs.append(mob) # Ajout des mobs dans une liste pour pouvoir les parcourirs
 
-# Ajout des mobs dans une liste pour pouvoir les parcourirs
-Liste_mobs.extend([mob1, mob2, mob3, mob4, mob5, mob6, mob7])
+# Le joueur reçoit aussi un nombre de vies, déterminées par le mode de jeu
+player = Player(460, lifes)
 
-# Affichage des barres du haut et du bas de la fenêtre
-title_bar = tk.Label(main, width=500, text=f"WOKE INVADERS: {gm}", fg= "white", bg="black")
-status_bar = tk.Label(main, width=500, text=f"Vies restantes:{player.life}", fg= "white", bg="black")
+# Création des barres d'informations
+title_bar = tk.Label(main, width=860, font=('Arial', 20, 'bold'), text=f"WOKE INVADERS: {gm}", fg= "white", bg="black")
+status_bar = tk.Label(main, width=860, font=('Arial', 15, 'bold'), text="", fg= "white", bg="black")
+
+# Placement des barres en haut et en bas de la fenêtre de jeu
 status_bar.place(relx=0.5, rely=1, anchor='s')
 title_bar.place(relx=0.5, rely=0, anchor='n')
 
 # bind nous permet de récupérer les touches qu'enclenchent le joueur, qui sont traitées par la fonction keypress
 main.bind("<Key>", keypress)
 
-# Initialisation de la fonction ticking, qui gère le temps du jeu
+# Initialisation de la fonction ticking, qui gère le temps du jeu et les évenements qui s'y passe
 ticking(0)
 
-# Mainloo^p d'affichage tkinter
+# Mainloop d'affichage tkinter
 main.mainloop()
