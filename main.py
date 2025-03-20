@@ -379,7 +379,7 @@ def check_no_mobs():
     if len(Liste_mobs) == 0:
         run_victory()
         return 
-    return
+
 
 def run_victory():
     canva.create_image(300, 300, image=brandon_image)
