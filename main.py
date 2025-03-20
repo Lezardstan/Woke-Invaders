@@ -23,7 +23,6 @@ global mode_gamemode
 global frame
 global gm
 global wave_counter
-global victory                          
 
 ### Ici les valeurs par défaut du jeu si jamais le joueur ne séléctionne pas de mode de jeu et ferme le menu comme un sauvage ###
 
