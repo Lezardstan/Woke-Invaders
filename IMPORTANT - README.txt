@@ -3,6 +3,13 @@
 =============================
 
 
+============= !!! NEW !!! =============
+woke_invaders.exe fonctionnel !!
+=======================================
+
+
+Pour execution du code depuis VSCode:
+
 Dépendances nécessaires à la bonne exécution: 
 Si vous ne les avez pas installés, exécutez les commandes suivantes (cmd ou PowerShell)
 
@@ -25,3 +32,6 @@ Bien modifier la variable path au début du fichier en indiquant le chemin du do
 "C:/Chemin/vers/le/dossier/"
 
 /!\ Remplacer les anti-slash windows (\) par des slashs (/) /!\
+
+
+
