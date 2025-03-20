@@ -9,7 +9,7 @@ from playsound import playsound
 # Se référer au readme.txt pour installation car on utilise des bibliothèque qui ne sont pas par défaut
 #######################################################################################################
 
-# WOKE INVADERS - Entre tradition vidéoludique et modernité
+# WOKE INVADERS - Entre tradition vidéoludique et modernité politique
 # Auteurs: Charles G. Mikael K. Valentin G.
 # Version 1
 
