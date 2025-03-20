@@ -283,11 +283,7 @@ def ticking(t):
     # On vérifie la vie du joueur et la présence de mobs
     # Cet ordre fait que si le joueur et les mobs sont détruit à la même frame, le joueur perd
     player.check_life()
-    victory = check_no_mobs()
-    
-    # "Ecran" de fin
-    if victory == 1: 
-        run_victory()
+    check_no_mobs()
     
     # Si la variable t (qui augmente de 1 à chaque tick) est un multiple de fire_rate, 
     # alors les mobs tirent
@@ -381,7 +377,9 @@ def keypress(event):
 # vérifie si la liste "Liste_mobs" est vide pour gagner la partie
 def check_no_mobs():
     if len(Liste_mobs) == 0:
-        return 1
+        run_victory()
+        return 
+    return
 
 def run_victory():
     canva.create_image(300, 300, image=brandon_image)
