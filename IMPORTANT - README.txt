@@ -18,6 +18,7 @@ Dépendances nécessaires à la bonne exécution:
 Si vous ne les avez pas installés, exécutez les commandes suivantes (cmd ou PowerShell)
 
 Python (évidemment)
+	pip install python3
 	
 Pillow
 	pip install Pillow
