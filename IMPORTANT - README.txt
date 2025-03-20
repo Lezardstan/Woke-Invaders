@@ -5,6 +5,10 @@
 
 ============= !!! NEW !!! =============
 woke_invaders.exe fonctionnel !!
+
+- Réalisé avec auto-py-to-exe
+- Le code a été modifié pour le packaging; le code présent dans le py est non-modifié et les dépendances nécéssaires présentées plus bas sont toujours nécéssaires pour sa bonne execution
+
 =======================================
 
 
