@@ -133,7 +133,7 @@ class Player:
         return
     def player_shoot(self): 
         global can_shoot
-        if can_shoot = True:
+        if can_shoot == True:
             print("tir !")                                                                              # Affichage dans le temrinal
             Liste_bullets.append(Bullets(self.position, self.y_position - 19, 1))                       # On créé une balle que l'on rajouter à la liste, avec une position 19px au dessus du joueur
             canva.delete(self.sprite)                                                                   # Sur ces lignes, on remplace le sprite du joueur par une image du joueur qui tire
