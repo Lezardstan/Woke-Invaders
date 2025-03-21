@@ -23,6 +23,7 @@ global mode_gamemode
 global frame
 global gm
 global wave_counter
+global can_shoot
 
 ### Ici les valeurs par défaut du jeu si jamais le joueur ne séléctionne pas de mode de jeu et ferme le menu comme un sauvage ###
 
@@ -131,11 +132,15 @@ class Player:
             main.quit()
         return
     def player_shoot(self): 
-        print("tir !")                                                                              # Affichage dans le temrinal
-        Liste_bullets.append(Bullets(self.position, self.y_position - 19, 1))                       # On créé une balle que l'on rajouter à la liste, avec une position 19px au dessus du joueur
-        canva.delete(self.sprite)                                                                   # Sur ces lignes, on remplace le sprite du joueur par une image du joueur qui tire
-        self.sprite = canva.create_image(self.position, self.y_position - 19, image=player_shoot)
-        main.after('100', self.back_to_main_sprite)                                                 # après 1s, on reviens au sprite normal
+        global can_shoot
+        if can_shoot = True:
+            print("tir !")                                                                              # Affichage dans le temrinal
+            Liste_bullets.append(Bullets(self.position, self.y_position - 19, 1))                       # On créé une balle que l'on rajouter à la liste, avec une position 19px au dessus du joueur
+            canva.delete(self.sprite)                                                                   # Sur ces lignes, on remplace le sprite du joueur par une image du joueur qui tire
+            self.sprite = canva.create_image(self.position, self.y_position - 19, image=player_shoot)
+            main.after('100', self.back_to_main_sprite)
+            can_shoot = False                                                                           # passe en false pour éviter que le joueur tire à nouveau
+            main.after(300, lambda: self.reset_shoot())                                                 # après 300ms, la fonction anonyme lambda appelle can_shoot et l'a passe en true# après 1s, on reviens au sprite normal
         return
     
     def back_to_main_sprite(self):                                                                  # On utilise une fonction pour faciliter l'utilisation de la fonction "after"
@@ -145,6 +150,10 @@ class Player:
     
     def wave_shoot(self):                                                                           # Le coup spécial, avec une idée similaire que pour les tirs classique
         Liste_wave.append(Wave(self.position, self.y_position))
+        
+    def reset_shoot(self):
+        global can_shoot
+        can_shoot = True  # Permet au joueur de tirer à nouveau
 
 # La classe Bullet qui comprend toutes les balles, du joueur et des mobs
 class Bullets:
