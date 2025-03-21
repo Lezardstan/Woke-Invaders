@@ -38,7 +38,7 @@ wave_counter = 0                        # Nombre de coups spéciaux
 pause = False                           # Statut de la pause
 victory = 0                             # Etat de victoire, si victory = 1 alors fin du jeu
 path = "E:/Documents/Code/fsi-main/"    # Chemin d'accès par défaut / A MODIFIER SI CHANGEMENT DE POSTE
-can_shoot = True
+can_shoot = True                        # Permet de rajouter un délai entre deux tirs du joueur (voir fonction player_shoot & reset_shoot)
 
 # Ici on randomise la direction initale des mobs (1 ou -1)
 direction = random.randint(-1, 1)
