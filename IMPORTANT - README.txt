@@ -6,9 +6,11 @@
 ============= !!! NEW !!! =============
 woke_invaders.exe fonctionnel !!
 
-- Réalisé avec auto-py-to-exe
-- Le code a été modifié pour le packaging; le code présent dans le py est non-modifié et les dépendances nécéssaires présentées plus bas sont toujours nécéssaires pour sa bonne execution
-- Votre antivirus n'aimera pas ce .exe, il faudra lui accorder une exception
+- Réalisé avec auto-py-to-exe (https://pypi.org/project/auto-py-to-exe/)
+- Le code a été modifié pour le packaging; le code présent dans main.py est non-modifié et les dépendances nécéssaires présentées plus bas sont toujours nécéssaires pour sa bonne execution
+- Le code modifié dans main for exe.py a été fait suivant les recommandation présentes sur https://github.com/TomSchimansky/CustomTkinter/discussions/939
+
+- Votre antivirus n'aimera pas ce .exe, il faudra lui accorder une exception // De même pour windows
 - Promis c'est pas un virus
 
 =======================================
